@@ -1,13 +1,16 @@
 //connecting to our signaling server 
-var conn = new WebSocket('ws://localhost:8080/socket');
+if(window.location.href.split("//:")[0] == 'https')
+    var conn = new WebSocket('wss://' + window.location.href.split("/")[2] + '/socket');
+else 
+    var conn = new WebSocket('ws://' + window.location.href.split("/")[2] + '/socket');
 
 conn.onopen = function() {
-    console.log("Connected to the signaling server");
+    logMe("Connected to the signaling server");
     initialize();
 };
 
 conn.onmessage = function(msg) {
-    console.log("Got message", msg.data);
+    logMe("Got message" + msg.data);
     var content = JSON.parse(msg.data);
     var data = content.data;
     switch (content.event) {
@@ -43,6 +46,7 @@ function initialize() {
     // Setup ice handling
     peerConnection.onicecandidate = function(event) {
         if (event.candidate) {
+            logMe(JSON.stringify(event.candidate))
             send({
                 event : "candidate",
                 data : event.candidate
@@ -56,21 +60,21 @@ function initialize() {
     });
 
     dataChannel.onerror = function(error) {
-        console.log("Error occured on datachannel:", error);
+        logMe("Error occured on datachannel:" +  error);
     };
 
     // when we receive a message from the other peer, printing it on the console
     dataChannel.onmessage = function(event) {
-        console.log("message:", event.data);
+        logMe("message:" + event.data);
     };
 
     dataChannel.onclose = function() {
-        console.log("data channel is closed");
+        logMe("data channel is closed");
     };
 
     dataChannel.onopen = function() {
         dataChannel.send('Hi back!');
-        console.log("data channel is onopend");
+        logMe("data channel is onopend");
     };
   
   	peerConnection.ondatachannel = function (event) {
@@ -116,7 +120,7 @@ function handleOffer(offer) {
         })
         .catch(function(reason) {
             // An error occurred, so handle the failure to connect
-            console.log(reason);
+            logMe(reason);
             //alert("Error creating an answer");
         });
     });
@@ -134,4 +138,9 @@ function handleAnswer(answer) {
 function sendMessage() {
     dataChannel.send(input.value);
     input.value = "";
+}
+
+function logMe(info){
+    console.log(info);
+    document.getElementById("logMe").innerHTML += "<p>" + info + "</p>";
 }
