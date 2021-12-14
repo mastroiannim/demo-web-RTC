@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.6.0'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	//id 'plugin-id'
 }
 
 group = 'com.example'
@@ -10,6 +11,10 @@ sourceCompatibility = '11'
 
 repositories {
 	mavenCentral()
+
+	flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
@@ -19,7 +24,10 @@ dependencies {
 	
 	implementation "org.springframework.boot:spring-boot-starter-data-jpa"
 	implementation "com.microsoft.sqlserver:mssql-jdbc"	
+	//implementation "net.sf.ucanaccess:ucanaccess"
+	implementation fileTree(include: ['*.jar'], dir: 'libs')
 }
+
 
 test {
 	useJUnitPlatform()
