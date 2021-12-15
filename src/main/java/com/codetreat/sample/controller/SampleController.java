@@ -14,6 +14,11 @@ public class SampleController {
  
     @Autowired
     SampleService sampleService;
+
+    @RequestMapping("/home")
+	public String home() {
+	  return "Hello Docker World";
+	}
  
     @RequestMapping(value = "/sample")
         public List<SampleEntity> sample() {
