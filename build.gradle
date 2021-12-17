@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' version '2.6.0'
+	id 'org.springframework.boot' version '2.6.1'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 	//id 'plugin-id'
@@ -23,7 +23,8 @@ dependencies {
 	
 	implementation "org.springframework.boot:spring-boot-starter-data-jpa"
 	implementation "com.microsoft.sqlserver:mssql-jdbc"	
-	//implementation "net.sf.ucanaccess:ucanaccess"
-	implementation fileTree(include: ['*.jar'], dir: 'libs')
+	// https://mvnrepository.com/artifact/org.teiid/spring-data-ucanaccess
+	implementation 'org.teiid:spring-data-ucanaccess:1.7.2'
+	//implementation fileTree(include: ['*.jar'], dir: 'libs')
 }
 
